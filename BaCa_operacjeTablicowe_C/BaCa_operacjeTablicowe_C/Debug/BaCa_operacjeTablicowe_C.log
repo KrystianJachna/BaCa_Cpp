@@ -1,0 +1,17 @@
+﻿  BaCa_operacjeTablicowe_C.c
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(5,32): warning C4081: oczekiwano "newline"; znaleziono ";"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(40,1): warning C4047: "inicjowanie": "int **" różni się w poziomach operatorów pośrednich od "int *"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(78,1): warning C4047: "inicjowanie": "int **" różni się w poziomach operatorów pośrednich od "int *"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(133,1): warning C4047: "inicjowanie": "int **" różni się w poziomach operatorów pośrednich od "int *"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(190,1): warning C4047: "inicjowanie": "int **" różni się w poziomach operatorów pośrednich od "int *"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(237,1): warning C4047: "inicjowanie": "int **" różni się w poziomach operatorów pośrednich od "int *"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(284,1): warning C4047: "inicjowanie": "int **" różni się w poziomach operatorów pośrednich od "int *"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(359,1): warning C4047: "inicjowanie": "int **" różni się w poziomach operatorów pośrednich od "int *"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(433,1): warning C4047: "inicjowanie": "int **" różni się w poziomach operatorów pośrednich od "int *"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(476,48): warning C4047: "=": "unsigned short" różni się w poziomach operatorów pośrednich od "unsigned short *"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(474,1): warning C4047: "inicjowanie": "unsigned short *" różni się w poziomach operatorów pośrednich od "unsigned short"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(514,63): warning C4047: "=": "int **" różni się w poziomach operatorów pośrednich od "int *"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(524,63): warning C4047: "=": "int **" różni się w poziomach operatorów pośrednich od "int *"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(744,65): warning C4047: "=": "int **" różni się w poziomach operatorów pośrednich od "int *"
+C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C\BaCa_operacjeTablicowe_C.c(797,65): warning C4047: "=": "int **" różni się w poziomach operatorów pośrednich od "int *"
+  BaCa_operacjeTablicowe_C.vcxproj -> C:\Users\kryst\source\repos\BaCa_operacjeTablicowe_C\Debug\BaCa_operacjeTablicowe_C.exe

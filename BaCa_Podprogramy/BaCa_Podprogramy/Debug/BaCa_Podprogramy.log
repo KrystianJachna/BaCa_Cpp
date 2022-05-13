@@ -1,0 +1,4 @@
+﻿  BaCa_Podprogramy.cpp
+C:\Users\kryst\source\repos\BaCa_Podprogramy\BaCa_Podprogramy\BaCa_Podprogramy.cpp(71,11): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
+C:\Users\kryst\source\repos\BaCa_Podprogramy\BaCa_Podprogramy\BaCa_Podprogramy.cpp(150,11): warning C4018: "<": niezgodność typu ze znakiem/bez znaku
+  BaCa_Podprogramy.vcxproj -> C:\Users\kryst\source\repos\BaCa_Podprogramy\Debug\BaCa_Podprogramy.exe
