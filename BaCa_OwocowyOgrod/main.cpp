@@ -4,7 +4,12 @@ using namespace std;
 
 int main() {
 
-    cout << "test 2";
+    dasdada
+    das
+    dad
+    asd
+    a
+
 
     return 0;
 }
