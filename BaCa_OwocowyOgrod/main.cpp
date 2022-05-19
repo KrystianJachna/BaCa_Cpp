@@ -1,66 +1,55 @@
+// Krystian Jachna
 #include <iostream>
-#include <fstream>
-#include <cstdlib>
-#include <string>
-
-using namespace std;
-
-string imie, nazwisko;
-
-int nr_tel;
-
-int main()
-{
-    fstream plik;
-    plik.open("wizytowka.txt", ios::in);//ios::in czyli wprowadz do programu
-
-    if (plik.good() == false)
-    {
-        cout << "Plik nie istnieje!";
-        exit(0);
-    }
-
-    string linia;
-    int nr_lini = 1;
-
-    while (getline(plik, linia))
-    {
-        switch (nr_lini)
-        {
-        case 1: imie = linia; break;
-        case 2: nazwisko = linia; break;
-        case 3: nr_tel = atoi(linia.c_str()); break;
-        }
-        
-        nr_lini++;
 
 
-    }
+class BRANCH_CLASS {
 
-    plik.close();
+};
 
+class FRUIT_CLASS {
+private:
+    BRANCH_CLASS* fruitBranch;
+    unsigned int fruitWeight;
+    unsigned int fruitBranchLength;
+    FRUIT_CLASS* next;
+    FRUIT_CLASS* prev;
 
-    cout << imie << endl;
-    cout << nazwisko << endl;
-    cout << nr_tel << endl;
+public:
+    unsigned int getLength();
+    unsigned int getWeight();
+    void growthFruit();
+    void fadeFruit();
+    void pluckFruit();
+    BRANCH_CLASS* getBranchPointer();
+    FRUIT_CLASS() ;
+};
 
+unsigned int FRUIT_CLASS::getLength() {
+    return fruitBranchLength;
+}
 
+unsigned int FRUIT_CLASS::getWeight() {
+    return fruitWeight;
+}
 
+void FRUIT_CLASS::growthFruit() {
+    fruitWeight += 1;
+}
 
+void FRUIT_CLASS::fadeFruit() {
+    fruitWeight -= 1;
+}
 
+void FRUIT_CLASS::pluckFruit() {
+    fruitWeight = 0;
+}
 
+BRANCH_CLASS* FRUIT_CLASS::getBranchPointer() {
+    return fruitBranch;
+}
 
-
-
-
-
-
-
-
-
-
+int main() {
 
 
     return 0;
-
 }
