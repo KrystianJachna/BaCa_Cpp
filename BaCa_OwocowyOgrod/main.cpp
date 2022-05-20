@@ -6,6 +6,10 @@ class TREE_CLASS;
 class BRANCH_CLASS;
 class FRUIT_CLASS;
 
+class GARDEN_CLASS {
+
+};
+
 class TREE_CLASS {
 private:
     GARDEN_CLASS* treeGarden;
@@ -33,7 +37,11 @@ public:
     GARDEN_CLASS* getGardenPointer();
     BRANCH_CLASS* getBranchPointer(unsigned int height);
     TREE_CLASS(GARDEN_CLASS* treeGarden, unsigned int treeHeight, unsigned int treeNumber, unsigned int branchesNumber);
-
+    ~TREE_CLASS();
+    void setNextTree(TREE_CLASS* treePTR);
+    void setprevTree(TREE_CLASS* treePTR);
+    TREE_CLASS* nextTree();
+    TREE_CLASS* prevTree();
 };
 
 // =====================================================================================================================
@@ -147,7 +155,7 @@ FRUIT_CLASS::FRUIT_CLASS(FRUIT_CLASS &fruitToCopy) {
     prev = NULL;
 }
 
-FRUIT_CLASS::~FRUIT_CLASS() {
+FRUIT_CLASS::~FRUIT_CLASS() {               // tu sie nic nie psuje?
     if (next != NULL && prev != NULL) {
         prev->setNextFruit(next);
         next->setPrevFruit(prev);
@@ -347,6 +355,11 @@ BRANCH_CLASS::~BRANCH_CLASS() {
         FRUIT_CLASS* tmp = walkingElem->nextFruit();
         delete walkingElem;
         walkingElem = tmp;
+    }
+
+    if(next != NULL && prev != NULL) {
+        prev->setNextBranch(next);
+        next->setPrevBranch(prev);
     }
 }
 
@@ -595,6 +608,37 @@ BRANCH_CLASS* TREE_CLASS::getBranchPointer(unsigned int height) {
             return walkingElem;
     }
     return NULL;
+}
+
+TREE_CLASS::~TREE_CLASS() {
+    BRANCH_CLASS* walkingElem = firstBranch;
+
+    while(walkingElem != NULL) {
+        BRANCH_CLASS* tmp = walkingElem->nextBranch();
+        delete walkingElem;
+        walkingElem = tmp;
+    }
+
+    if(next != NULL && prev != NULL) {
+        prev->setNextTree(next);
+        next->setprevTree(prev);
+    }
+}
+
+void TREE_CLASS::setNextTree(TREE_CLASS *treePTR) {
+    next = treePTR;
+}
+
+void TREE_CLASS::setprevTree(TREE_CLASS *treePTR) {
+    prev = treePTR;
+}
+
+TREE_CLASS* TREE_CLASS::nextTree() {
+    return next;
+}
+
+TREE_CLASS* TREE_CLASS::prevTree() {
+    return prev;
 }
 
 // =====================================================================================================================
