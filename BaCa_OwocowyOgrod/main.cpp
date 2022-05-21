@@ -33,6 +33,14 @@ public:
     GARDEN_CLASS();
     ~GARDEN_CLASS();
     void displayAll();
+    void decreseWeight(unsigned int amount);
+    void increseWeight(unsigned int amount);
+    void increseFruitNumber(unsigned int count);
+    void decreseFruitNumber(unsigned int count);
+    void decreseBranchNumber(unsigned int number);
+    void increseBranchNumber(unsigned int number);
+    void decreseTreesNumber(unsigned int number);
+    void increseTreesNumber(unsigned int number);
 };
 
 class TREE_CLASS {
@@ -47,6 +55,7 @@ private:
     BRANCH_CLASS* lastBranch;
     TREE_CLASS* next;
     TREE_CLASS* prev;
+
 
 public:
     unsigned int getBranchesTotal();
@@ -70,6 +79,12 @@ public:
     TREE_CLASS();
     TREE_CLASS(TREE_CLASS &treeToCopy, unsigned int treeNumber = 0, GARDEN_CLASS* treeGarden = NULL);
     void displayAll();
+    void decreseWeight(unsigned int amount);
+    void increseWeight(unsigned int amount);
+    void increseFruitNumber(unsigned int count);
+    void decreseFruitNumber(unsigned int count);
+    void decreseBranchesNumber(unsigned int number);
+    void increseBranchesNumber(unsigned int number);
 };
 
 // =====================================================================================================================
@@ -106,8 +121,67 @@ public:
     BRANCH_CLASS* prevBranch();
     BRANCH_CLASS();
     void displayAll();
+    void decreseWeight(unsigned int amount);
+    void increseWeight(unsigned int amount);
+    void decreseFruitNumber(unsigned int number);
+    void increseFruitNumber(unsigned int number);
 };
 
+// =====================================================================================================================
+void BRANCH_CLASS::decreseWeight(unsigned int amount) {
+    fruitsWeight -= amount;
+}
+void BRANCH_CLASS::increseWeight(unsigned int amount) {
+    fruitsWeight += amount;
+}
+void TREE_CLASS::decreseWeight(unsigned int amount) {
+    fruitsWeight -= amount;
+}
+void TREE_CLASS::increseWeight(unsigned int amount) {
+    fruitsWeight += amount;
+}
+void TREE_CLASS::decreseFruitNumber(unsigned int count) {
+    fruitsNumber -= count;
+}
+void TREE_CLASS::increseFruitNumber(unsigned int count) {
+    fruitsNumber += count;
+}
+void GARDEN_CLASS::decreseWeight(unsigned int amount) {
+    fruitsWeight -= amount;
+}
+void GARDEN_CLASS::increseWeight(unsigned int amount) {
+    fruitsWeight += amount;
+}
+void GARDEN_CLASS::increseFruitNumber(unsigned int count) {
+    fruitsNumber += count;
+}
+void GARDEN_CLASS::decreseFruitNumber(unsigned int count) {
+    fruitsNumber -= count;
+}
+void GARDEN_CLASS::increseBranchNumber(unsigned int number) {
+    branchesNumber += number;
+}
+void GARDEN_CLASS::decreseBranchNumber(unsigned int number) {
+    branchesNumber -= number;
+}
+void BRANCH_CLASS::increseFruitNumber(unsigned int number) {
+    fruitsNumber += number;
+}
+void BRANCH_CLASS::decreseFruitNumber(unsigned int number) {
+    fruitsNumber -= number;
+}
+void TREE_CLASS::decreseBranchesNumber(unsigned int number) {
+    branchesNumber -= number;
+}
+void TREE_CLASS::increseBranchesNumber(unsigned int number) {
+    branchesNumber += number;
+}
+void GARDEN_CLASS::decreseTreesNumber(unsigned int number) {
+    treesNumber -= number;
+}
+void GARDEN_CLASS::increseTreesNumber(unsigned int number) {
+    treesNumber += number;
+}
 // =====================================================================================================================
 
 class FRUIT_CLASS {
@@ -154,14 +228,41 @@ unsigned int FRUIT_CLASS::getWeight() {
 
 void FRUIT_CLASS::growthFruit() {
     fruitWeight += 1;
+
+    if(fruitBranch != NULL) {
+        fruitBranch->increseWeight(1);
+        if (fruitBranch->getTreePointer() != NULL) {
+            fruitBranch->getTreePointer()->increseWeight(1);
+            if (fruitBranch->getTreePointer()->getGardenPointer() != NULL)
+                fruitBranch->getTreePointer()->getGardenPointer()->increseWeight(1);
+        }
+    }
 }
 
 void FRUIT_CLASS::fadeFruit() {
-    if (fruitWeight != 0)
+    if (fruitWeight != 0) {
         fruitWeight -= 1;
+
+        if(fruitBranch != NULL) {
+            fruitBranch->decreseWeight(1);
+            if (fruitBranch->getTreePointer() != NULL) {
+                fruitBranch->getTreePointer()->decreseWeight(1);
+                if (fruitBranch->getTreePointer()->getGardenPointer() != NULL)
+                    fruitBranch->getTreePointer()->getGardenPointer()->decreseWeight(1);
+            }
+        }
+    }
 }
 
 void FRUIT_CLASS::pluckFruit() {
+    if(fruitBranch != NULL) {
+        fruitBranch->decreseWeight(fruitWeight);
+        if (fruitBranch->getTreePointer() != NULL) {
+            fruitBranch->getTreePointer()->decreseWeight(fruitWeight);
+            if (fruitBranch->getTreePointer()->getGardenPointer() != NULL)
+                fruitBranch->getTreePointer()->getGardenPointer()->decreseWeight(fruitWeight);
+        }
+    }
     fruitWeight = 0;
 }
 
@@ -175,6 +276,15 @@ FRUIT_CLASS::FRUIT_CLASS(BRANCH_CLASS* fruitBranch, unsigned int fruitWeight,
     this->fruitWeight = fruitWeight;
     this->fruitBranchLength = fruitBranchLength;
 
+    if(fruitBranch != NULL) {
+        fruitBranch->increseFruitNumber(1);
+        if (fruitBranch->getTreePointer() != NULL) {
+            fruitBranch->getTreePointer()->increseFruitNumber(1);
+            if (fruitBranch->getTreePointer()->getGardenPointer() != NULL)
+                fruitBranch->getTreePointer()->getGardenPointer()->increseFruitNumber(1);
+        }
+    }
+
     this->next = NULL;
     this->prev = NULL;
 }
@@ -183,15 +293,37 @@ FRUIT_CLASS::FRUIT_CLASS(FRUIT_CLASS &fruitToCopy, BRANCH_CLASS* fruitBranch) {
     this->fruitBranch = fruitBranch;
     this->fruitWeight = fruitToCopy.fruitWeight;
     this->fruitBranchLength = fruitToCopy.fruitBranchLength;
+
+    if (fruitBranch != NULL) {
+        fruitBranch->increseWeight(this->fruitWeight);
+        fruitBranch->increseFruitNumber(1);
+        if (fruitBranch->getTreePointer() != NULL) {
+            fruitBranch->getTreePointer()->increseWeight(this->fruitWeight);
+            fruitBranch->getTreePointer()->increseFruitNumber(1);
+            if (fruitBranch->getTreePointer()->getGardenPointer() != NULL) {
+                fruitBranch->getTreePointer()->getGardenPointer()->increseWeight(this->fruitWeight);
+                fruitBranch->getTreePointer()->getGardenPointer()->increseFruitNumber(1);
+            }
+        }
+    }
     next = NULL;
     prev = NULL;
 }
 
 FRUIT_CLASS::~FRUIT_CLASS() {
-   /* if (next != NULL && prev != NULL) {
-        prev->setNextFruit(next);
-        next->setPrevFruit(prev);
-    }*/
+   if (fruitBranch != NULL) {
+       fruitBranch->decreseWeight(fruitWeight);
+       fruitBranch->decreseFruitNumber(1);
+       if (fruitBranch->getTreePointer() != NULL) {
+           fruitBranch->getTreePointer()->decreseWeight(fruitWeight);
+           fruitBranch->getTreePointer()->decreseFruitNumber(1);
+           if (fruitBranch->getTreePointer()->getGardenPointer() != NULL) {
+               fruitBranch->getTreePointer()->getGardenPointer()->decreseWeight(fruitWeight);
+               fruitBranch->getTreePointer()->getGardenPointer()->decreseFruitNumber(1);
+           }
+       }
+   }
+
 }
 
 void FRUIT_CLASS::setNextFruit(FRUIT_CLASS* fruitPTR) {
@@ -235,13 +367,10 @@ void BRANCH_CLASS::growthBranch() {
 
     while (walkingElem != NULL) {
         walkingElem->growthFruit();
-        fruitsWeight += 1;
         walkingElem = walkingElem->nextFruit();
     }
 
     if(branchLength > 0 && branchLength % 2 == 0) {
-        fruitsNumber += 1;
-
         FRUIT_CLASS* fruitPTR =  new FRUIT_CLASS(this, 0, branchLength);
 
         if (firstFruit == NULL) {
@@ -268,17 +397,11 @@ void BRANCH_CLASS::fadeBranch() {
     FRUIT_CLASS* walkingElem = firstFruit;
 
     while (walkingElem != NULL) {
-        if (walkingElem->getWeight() != 0)
-            fruitsWeight -= 1;
         walkingElem->fadeFruit();
-
         walkingElem = walkingElem->nextFruit();
     }
 
     if ( branchLength % 2 == 0) {
-        fruitsNumber -= 1;
-        fruitsWeight -= lastFruit->getWeight();
-
         FRUIT_CLASS* newLAST = lastFruit->prevFruit();
         if(newLAST == NULL) {
             firstFruit = NULL;
@@ -298,10 +421,8 @@ void BRANCH_CLASS::harvestBranch(unsigned int fruitWeight) {
     FRUIT_CLASS* walkingElem = firstFruit;
 
     while (walkingElem != NULL) {
-        if (walkingElem->getWeight() >= fruitWeight) {
-            fruitsWeight -= walkingElem->getWeight();
+        if (walkingElem->getWeight() >= fruitWeight)
             walkingElem->pluckFruit();
-        }
         walkingElem = walkingElem->nextFruit();
     }
 }
@@ -315,17 +436,12 @@ void BRANCH_CLASS::cutBranch(unsigned int branchLength) {
     FRUIT_CLASS* walkingElem = lastFruit;
 
     while(walkingElem != NULL && walkingElem->getLength() >= branchLength) {
-        fruitsNumber -= 1;
-        fruitsWeight -= walkingElem->getWeight();
-
         walkingElem = walkingElem->prevFruit();
         walkingElem->nextFruit()->setNextFruit(NULL);
         delete walkingElem->nextFruit();
     }
 
     if (walkingElem == firstFruit && firstFruit->getLength() > branchLength) {
-        fruitsNumber -= 1;
-        fruitsWeight -= walkingElem->getWeight();
         delete firstFruit;
         firstFruit = NULL;
         lastFruit = NULL;
@@ -362,6 +478,13 @@ BRANCH_CLASS::BRANCH_CLASS(TREE_CLASS *branchTree, unsigned int treeHeight) {
     fruitsWeight = 0;
     branchLength = 0;
 
+    if (branchTree != NULL) {
+        branchTree->increseBranchesNumber(1);
+        if(branchTree->getGardenPointer() != NULL) {
+            branchTree->getGardenPointer()->increseBranchNumber(1);
+        }
+    }
+
     next = NULL;
     prev = NULL;
 }
@@ -375,10 +498,11 @@ BRANCH_CLASS::~BRANCH_CLASS() {
         walkingElem = tmp;
     }
 
-    /*if(next != NULL && prev != NULL) {
-        prev->setNextBranch(next);
-        next->setPrevBranch(prev);
-    }*/
+    if (branchTree != NULL) {
+        branchTree->decreseBranchesNumber(1);
+        if (branchTree->getGardenPointer() != NULL)
+            branchTree->getGardenPointer()->decreseBranchNumber(1);
+    }
 }
 
 void BRANCH_CLASS::setNextBranch(BRANCH_CLASS *branchPTR) {
@@ -401,14 +525,19 @@ BRANCH_CLASS::BRANCH_CLASS(BRANCH_CLASS &branchToCopy,  unsigned int treeHeight,
     this->treeHeight = treeHeight;
     this->branchTree = branchTree;
     this->branchLength = branchToCopy.branchLength;
-    this->fruitsNumber = branchToCopy.fruitsNumber;
-    this->fruitsWeight = branchToCopy.fruitsWeight;
+    this->fruitsNumber = 0;
+    this->fruitsWeight = 0;
     this->next = NULL;
     this->prev = NULL;
 
     if (branchToCopy.firstFruit == NULL) {
         firstFruit = NULL;
         lastFruit = NULL;
+        if (branchTree != NULL) {
+            branchTree->increseBranchesNumber(1);
+            if (branchTree->getGardenPointer() != NULL)
+                branchTree->getGardenPointer()->increseBranchNumber(1);
+        }
         return;
     }
 
@@ -422,7 +551,6 @@ BRANCH_CLASS::BRANCH_CLASS(BRANCH_CLASS &branchToCopy,  unsigned int treeHeight,
         walkingElem->setNextFruit(new FRUIT_CLASS(*(walkingElemToCopy->nextFruit()), this));
         walkingElem->setPrevFruit(prev);
 
-
         prev = walkingElem;
         walkingElem = walkingElem->nextFruit();
         walkingElemToCopy = walkingElemToCopy->nextFruit();
@@ -430,6 +558,12 @@ BRANCH_CLASS::BRANCH_CLASS(BRANCH_CLASS &branchToCopy,  unsigned int treeHeight,
     walkingElem->setPrevFruit(prev);
     walkingElem->setNextFruit(NULL);
     lastFruit = walkingElem;
+
+    if (branchTree != NULL) {
+        branchTree->increseBranchesNumber(1);
+        if (branchTree->getGardenPointer() != NULL)
+            branchTree->getGardenPointer()->increseBranchNumber(1);
+    }
 }
 
 BRANCH_CLASS::BRANCH_CLASS() {
@@ -472,14 +606,7 @@ void TREE_CLASS::growthTree() {
     BRANCH_CLASS* walkingElem = firstBranch;
 
     while (walkingElem != NULL) {
-        fruitsNumber -= walkingElem->getFruitsTotal();
-        fruitsWeight -= walkingElem->getWeightsTotal();
-
         walkingElem->growthBranch();
-
-        fruitsNumber += walkingElem->getFruitsTotal();
-        fruitsWeight += walkingElem->getWeightsTotal();
-
         walkingElem = walkingElem->nextBranch();
     }
 
@@ -500,7 +627,6 @@ void TREE_CLASS::growthTree() {
             lastBranch->setPrevBranch(tmp);
             lastBranch->setNextBranch(NULL);
         }
-        branchesNumber += 1;
     }
 }
 
@@ -511,23 +637,11 @@ void TREE_CLASS::fadeTree() {
     BRANCH_CLASS* walkingElem = firstBranch;
 
     while (walkingElem != NULL) {
-        fruitsWeight -= walkingElem->getWeightsTotal();
-        fruitsNumber -= walkingElem->getFruitsTotal();
-
         walkingElem->fadeBranch();
-
-        fruitsNumber += walkingElem->getFruitsTotal();
-        fruitsWeight += walkingElem->getWeightsTotal();
-
         walkingElem = walkingElem->nextBranch();
     }
 
     if (treeHeight % 3 == 0) {
-        branchesNumber -= 1;
-
-        fruitsNumber -= lastBranch->getFruitsTotal();
-        fruitsWeight -= lastBranch->getWeightsTotal();
-
         BRANCH_CLASS* newLAST = lastBranch->prevBranch();
         if (newLAST == NULL) {
             firstBranch = NULL;
@@ -547,12 +661,7 @@ void TREE_CLASS::harvestTree(unsigned int fruitWeight) {
     BRANCH_CLASS* walkingElem = firstBranch;
 
     while (walkingElem != NULL) {
-        fruitsWeight -= walkingElem->getWeightsTotal();
-
         walkingElem->harvestBranch(fruitWeight);
-
-        fruitsWeight += walkingElem->getWeightsTotal();
-
         walkingElem = walkingElem->nextBranch();
     }
 }
@@ -566,26 +675,22 @@ void TREE_CLASS::cutTree(unsigned int treeHeight) {
     BRANCH_CLASS* walkingElem = lastBranch;
 
     while (walkingElem != NULL && walkingElem->getHeight() > treeHeight){
-        branchesNumber -= 1;
-        fruitsWeight -= walkingElem->getWeightsTotal();
-        fruitsNumber -= walkingElem->getFruitsTotal();
-
         BRANCH_CLASS* tmp = walkingElem->prevBranch();
         delete walkingElem;
         walkingElem = tmp;
     }
 
     if(walkingElem == firstBranch && firstBranch->getHeight() > treeHeight) {
-        branchesNumber -= 1;
-        fruitsWeight -= walkingElem->getWeightsTotal();
-        fruitsNumber -= walkingElem->getFruitsTotal();
         delete firstBranch;
         firstBranch = NULL;
         lastBranch = NULL;
     }
     else {
+        if (walkingElem == NULL)
+            firstBranch = NULL;
         lastBranch = walkingElem;
-        lastBranch->setNextBranch(NULL);
+        if (walkingElem != NULL)
+            lastBranch->setNextBranch(NULL);
     }
 }
 
@@ -610,32 +715,26 @@ void TREE_CLASS::cloneBranch(BRANCH_CLASS *branch) {
         delete firstBranch;
 
         firstBranch = new BRANCH_CLASS(*branch, treeHeight, this);
-        fruitsWeight += firstBranch->getWeightsTotal();
-        fruitsNumber += firstBranch->getFruitsTotal();
         lastBranch = firstBranch;
         firstBranch->setNextBranch(NULL);
         firstBranch->setPrevBranch(NULL);
     }
     else if (walkingElem == firstBranch) {
         BRANCH_CLASS* scBranch = firstBranch->nextBranch();
+        unsigned int deletingTreeHight = firstBranch->getHeight();
         delete firstBranch;
 
-        firstBranch = new BRANCH_CLASS(*branch, treeHeight, this);
-        fruitsWeight += firstBranch->getWeightsTotal();
-        fruitsNumber += firstBranch->getFruitsTotal();
-
+        firstBranch = new BRANCH_CLASS(*branch, deletingTreeHight, this);
         firstBranch->setNextBranch(scBranch);
         firstBranch->setPrevBranch(NULL);
         scBranch->setPrevBranch(firstBranch);
     }
     else if (walkingElem == lastBranch) {
         BRANCH_CLASS* scBranch = firstBranch->nextBranch();
+        unsigned int deletingTreeHight = lastBranch->getHeight();
         delete lastBranch;
 
-        lastBranch = new BRANCH_CLASS(*branch, treeHeight, this);
-        fruitsWeight += lastBranch->getWeightsTotal();
-        fruitsNumber += lastBranch->getFruitsTotal();
-
+        lastBranch = new BRANCH_CLASS(*branch, deletingTreeHight, this);
         lastBranch->setNextBranch(NULL);
         lastBranch->setPrevBranch(scBranch);
         scBranch->setNextBranch(lastBranch);
@@ -643,15 +742,14 @@ void TREE_CLASS::cloneBranch(BRANCH_CLASS *branch) {
     else {
         BRANCH_CLASS* nextBranch = walkingElem->nextBranch();
         BRANCH_CLASS* prevBranch = walkingElem->prevBranch();
+        unsigned int deletingTreeHight = walkingElem->getHeight();
         delete walkingElem;
-        walkingElem = new BRANCH_CLASS(*branch, treeHeight, this);
+        walkingElem = new BRANCH_CLASS(*branch, deletingTreeHight, this);
         walkingElem->setNextBranch(nextBranch);
         walkingElem->setPrevBranch(prevBranch);
         prevBranch->setNextBranch(walkingElem);
         nextBranch->setPrevBranch(walkingElem);
 
-        fruitsWeight += walkingElem->getWeightsTotal();
-        fruitsNumber += walkingElem->getFruitsTotal();
     }
 }
 
@@ -679,10 +777,8 @@ TREE_CLASS::~TREE_CLASS() {
         walkingElem = tmp;
     }
 
-    /*if(next != NULL && prev != NULL) {
-        prev->setNextTree(next);
-        next->setprevTree(prev);
-    }*/
+    if (treeGarden != NULL)
+        treeGarden->decreseTreesNumber(1);
 }
 
 void TREE_CLASS::setNextTree(TREE_CLASS *treePTR) {
@@ -712,6 +808,10 @@ TREE_CLASS::TREE_CLASS(unsigned int treeNumber, GARDEN_CLASS* treeGarden) {
     this->lastBranch = NULL;
     this->next = NULL;
     this->prev = NULL;
+
+    if(treeGarden != NULL) {
+        treeGarden->increseTreesNumber(1);
+    }
 }
 
 TREE_CLASS::TREE_CLASS() {
@@ -730,9 +830,9 @@ TREE_CLASS::TREE_CLASS() {
 TREE_CLASS::TREE_CLASS(TREE_CLASS &treeToCopy, unsigned int treeNumber, GARDEN_CLASS *treeGarden) {
     this->treeNumber = treeNumber;
     this->treeGarden =  treeGarden;
-    this->branchesNumber = treeToCopy.branchesNumber;
-    this->fruitsNumber = treeToCopy.fruitsNumber;
-    this->fruitsWeight = treeToCopy.fruitsWeight;
+    this->branchesNumber = 0;
+    this->fruitsNumber = 0;
+    this->fruitsWeight = 0;
     this->treeHeight = treeToCopy.treeHeight;
     this->next = NULL;
     this->prev = NULL;
@@ -740,6 +840,10 @@ TREE_CLASS::TREE_CLASS(TREE_CLASS &treeToCopy, unsigned int treeNumber, GARDEN_C
     if (treeToCopy.firstBranch == NULL) {
         firstBranch = NULL;
         lastBranch = NULL;
+        if(treeGarden != NULL) {
+            treeGarden->increseTreesNumber(1);
+        }
+
         return;
     }
 
@@ -760,6 +864,10 @@ TREE_CLASS::TREE_CLASS(TREE_CLASS &treeToCopy, unsigned int treeNumber, GARDEN_C
     walkingElem->setPrevBranch(prev);
     walkingElem->setNextBranch(NULL);
     lastBranch = walkingElem;
+
+    if(treeGarden != NULL) {
+        treeGarden->increseTreesNumber(1);
+    }
 }
 
 // =====================================================================================================================
@@ -807,17 +915,14 @@ void GARDEN_CLASS::plantTree() {
     if (treesNumber == 0) {
         firstTree = new TREE_CLASS(0, this);
         lastTree = firstTree;
-        treesNumber += 1;
     }
     else if (holesNumber == 0) {
         lastTree->setNextTree(new TREE_CLASS(lastTree->getNumber() + 1, this));
         lastTree->nextTree()->setprevTree(lastTree);
         lastTree = lastTree->nextTree();
         lastTree->setNextTree(NULL);
-        treesNumber += 1;
     }
     else {
-        treesNumber += 1;
         holesNumber -= 1;
         unsigned int prevNumber = lastTree->getNumber();
 
@@ -861,10 +966,6 @@ void GARDEN_CLASS::extractTree(unsigned int treeNumber) {
     }
     if (findElem) {
         if (walkingELem == firstTree && firstTree == lastTree) {
-            fruitsWeight -= walkingELem->getWeightsTotal();
-            fruitsNumber -= walkingELem->getFruitsTotal();
-            branchesNumber -= walkingELem->getBranchesTotal();
-            treesNumber -= 1;
             delete walkingELem;
             firstTree = NULL;
             lastTree = NULL;
@@ -872,10 +973,6 @@ void GARDEN_CLASS::extractTree(unsigned int treeNumber) {
         else if (walkingELem == firstTree) {
             TREE_CLASS* scTREE = firstTree->nextTree();
             firstTree->nextTree()->setprevTree(NULL);
-            fruitsWeight -= walkingELem->getWeightsTotal();
-            fruitsNumber -= walkingELem->getFruitsTotal();
-            branchesNumber -= walkingELem->getBranchesTotal();
-            treesNumber -= 1;
             holesNumber += 1;
             delete firstTree;
             firstTree = scTREE;
@@ -883,22 +980,12 @@ void GARDEN_CLASS::extractTree(unsigned int treeNumber) {
         else if (walkingELem == lastTree) {
             TREE_CLASS* b4LastTREE = lastTree->prevTree();
             lastTree->prevTree()->setNextTree(NULL);
-            fruitsWeight -= walkingELem->getWeightsTotal();
-            fruitsNumber -= walkingELem->getFruitsTotal();
-            branchesNumber -= walkingELem->getBranchesTotal();
-            treesNumber -= 1;
             delete lastTree;
             lastTree = b4LastTREE;
         }
         else{
             walkingELem->prevTree()->setNextTree(walkingELem->nextTree());
             walkingELem->nextTree()->setprevTree(walkingELem->prevTree());
-
-            fruitsWeight -= walkingELem->getWeightsTotal();
-            fruitsNumber -= walkingELem->getFruitsTotal();
-            branchesNumber -= walkingELem->getBranchesTotal();
-
-            treesNumber -= 1;
             holesNumber += 1;
             delete walkingELem;
         }
@@ -908,16 +995,7 @@ void GARDEN_CLASS::extractTree(unsigned int treeNumber) {
 void GARDEN_CLASS::growthGarden() {
     TREE_CLASS* walkingElem = firstTree;
     while (walkingElem != NULL) {
-        fruitsWeight -= walkingElem->getWeightsTotal();
-        fruitsNumber -= walkingElem->getFruitsTotal();
-        branchesNumber -= walkingElem->getBranchesTotal();
-
         walkingElem->growthTree();
-
-        fruitsWeight += walkingElem->getWeightsTotal();
-        fruitsNumber += walkingElem->getFruitsTotal();
-        branchesNumber += walkingElem->getBranchesTotal();
-
         walkingElem = walkingElem->nextTree();
     }
 }
@@ -925,16 +1003,7 @@ void GARDEN_CLASS::growthGarden() {
 void GARDEN_CLASS::fadeGarden() {
     TREE_CLASS* walkingElem = firstTree;
     while (walkingElem != NULL) {
-        fruitsWeight -= walkingElem->getWeightsTotal();
-        fruitsNumber -= walkingElem->getFruitsTotal();
-        branchesNumber -= walkingElem->getBranchesTotal();
-
         walkingElem->fadeTree();
-
-        fruitsWeight += walkingElem->getWeightsTotal();
-        fruitsNumber += walkingElem->getFruitsTotal();
-        branchesNumber += walkingElem->getBranchesTotal();
-
         walkingElem = walkingElem->nextTree();
     }
 }
@@ -942,16 +1011,7 @@ void GARDEN_CLASS::fadeGarden() {
 void GARDEN_CLASS::harvestGarden(unsigned int weight) {
     TREE_CLASS* walkingElem = firstTree;
     while (walkingElem != NULL) {
-        fruitsWeight -= walkingElem->getWeightsTotal();
-        fruitsNumber -= walkingElem->getFruitsTotal();
-        branchesNumber -= walkingElem->getBranchesTotal();
-
         walkingElem->harvestTree(weight);
-
-        fruitsWeight += walkingElem->getWeightsTotal();
-        fruitsNumber += walkingElem->getFruitsTotal();
-        branchesNumber += walkingElem->getBranchesTotal();
-
         walkingElem = walkingElem->nextTree();
     }
 }
@@ -974,17 +1034,14 @@ void GARDEN_CLASS::cloneTree(unsigned int treeNumber) {
     if (treesNumber == 0) {
         firstTree = new TREE_CLASS(*treeToCopy, 1, this);
         lastTree = firstTree;
-        treesNumber += 1;
     }
     else if (holesNumber == 0) {
         lastTree->setNextTree(new TREE_CLASS(*treeToCopy ,lastTree->getNumber() + 1, this));
         lastTree->nextTree()->setprevTree(lastTree);
         lastTree = lastTree->nextTree();
         lastTree->setNextTree(NULL);
-        treesNumber += 1;
     }
     else {
-        treesNumber +=1;
         holesNumber -= 1;
         unsigned int prevNumber = lastTree->getNumber();
 
@@ -1076,35 +1133,53 @@ void BRANCH_CLASS::displayAll() {
     }
 }
 
+int main(){
 
-int main() {
+    GARDEN_CLASS* garden = new GARDEN_CLASS();
+    garden->plantTree();
+    garden->plantTree();
+    garden->plantTree();
+    garden->plantTree();
+    garden->extractTree(2);
+    garden->plantTree();
+    garden->growthGarden();
+    garden->plantTree();
+    garden->growthGarden();
+    garden->plantTree();
+    garden->growthGarden();
+    garden->plantTree();
+    garden->growthGarden();
+    garden->plantTree();
+    garden->plantTree();
+    garden->growthGarden();
+    garden->extractTree(3);
+    garden->extractTree(3);
+    garden->displayAll();
 
+    garden->growthGarden();
+    garden->growthGarden();
+    garden->fadeGarden();
+    garden->fadeGarden();
+    garden->fadeGarden();
+    garden->fadeGarden();
+    garden->growthGarden();
+    garden->growthGarden();
+    garden->growthGarden();
+    garden->growthGarden();
+    garden->harvestGarden(3);
+    garden->cloneTree(3);
+    garden->cloneTree(1);
+    garden->cloneTree(8);
+    garden->displayAll();
 
-    TREE_CLASS* WOOD = new TREE_CLASS();
-    WOOD->growthTree();
-    WOOD->growthTree();
-    WOOD->growthTree();
-    WOOD->growthTree();
-    WOOD->growthTree();
-    WOOD->growthTree();
-    WOOD->growthTree();
-    WOOD->growthTree();
-    WOOD->growthTree();
-    WOOD->growthTree();
-    WOOD->displayAll();
+    garden->getTreePointer(3)->cutTree(1);
+    garden->getTreePointer(1)->cutTree(5);
+    garden->extractTree(3);
+    garden->harvestGarden(2);
+    garden->getTreePointer(2)->growthTree();
+    garden->getTreePointer(2)->growthTree();
+    garden->fadeGarden();
+    garden->displayAll();
+    delete garden;
 
-    std::cout << "///////" << std::endl << std::endl;
-
-    WOOD->getBranchPointer(6)->fadeBranch();
-    WOOD->getBranchPointer(6)->fadeBranch();
-    WOOD->getBranchPointer(6)->fadeBranch();
-    WOOD->getBranchPointer(6)->fadeBranch();
-    WOOD->getBranchPointer(6)->fadeBranch();
-    WOOD->displayAll();
-
-    std::cout << "///////" << std::endl << std::endl;
-
-    WOOD->cloneBranch(WOOD->getBranchPointer(3));
-    WOOD->displayAll();
 }
-
