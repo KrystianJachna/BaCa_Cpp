@@ -188,10 +188,10 @@ FRUIT_CLASS::FRUIT_CLASS(FRUIT_CLASS &fruitToCopy, BRANCH_CLASS* fruitBranch) {
 }
 
 FRUIT_CLASS::~FRUIT_CLASS() {
-    if (next != NULL && prev != NULL) {
+   /* if (next != NULL && prev != NULL) {
         prev->setNextFruit(next);
         next->setPrevFruit(prev);
-    }
+    }*/
 }
 
 void FRUIT_CLASS::setNextFruit(FRUIT_CLASS* fruitPTR) {
@@ -375,10 +375,10 @@ BRANCH_CLASS::~BRANCH_CLASS() {
         walkingElem = tmp;
     }
 
-    if(next != NULL && prev != NULL) {
+    /*if(next != NULL && prev != NULL) {
         prev->setNextBranch(next);
         next->setPrevBranch(prev);
-    }
+    }*/
 }
 
 void BRANCH_CLASS::setNextBranch(BRANCH_CLASS *branchPTR) {
@@ -565,14 +565,14 @@ void TREE_CLASS::cutTree(unsigned int treeHeight) {
 
     BRANCH_CLASS* walkingElem = lastBranch;
 
-    while (walkingElem != NULL && walkingElem->getHeight() >= treeHeight){
+    while (walkingElem != NULL && walkingElem->getHeight() > treeHeight){
         branchesNumber -= 1;
         fruitsWeight -= walkingElem->getWeightsTotal();
         fruitsNumber -= walkingElem->getFruitsTotal();
 
-        walkingElem = walkingElem->prevBranch();
-        walkingElem->nextBranch()->setNextBranch(NULL);
+        BRANCH_CLASS* tmp = walkingElem->prevBranch();
         delete walkingElem;
+        walkingElem = tmp;
     }
 
     if(walkingElem == firstBranch && firstBranch->getHeight() > treeHeight) {
@@ -679,10 +679,10 @@ TREE_CLASS::~TREE_CLASS() {
         walkingElem = tmp;
     }
 
-    if(next != NULL && prev != NULL) {
+    /*if(next != NULL && prev != NULL) {
         prev->setNextTree(next);
         next->setprevTree(prev);
-    }
+    }*/
 }
 
 void TREE_CLASS::setNextTree(TREE_CLASS *treePTR) {
@@ -1078,68 +1078,33 @@ void BRANCH_CLASS::displayAll() {
 
 
 int main() {
-    GARDEN_CLASS * GARDEN = new GARDEN_CLASS();
-    GARDEN->plantTree();
-    GARDEN->plantTree();
-    GARDEN->plantTree();
-    GARDEN->plantTree();
-    GARDEN->extractTree(2);
-    GARDEN->displayAll();
 
-    GARDEN->plantTree();
-    GARDEN->growthGarden();
-    GARDEN->plantTree();
-    GARDEN->growthGarden();
-    GARDEN->plantTree();
-    GARDEN->growthGarden();
-    GARDEN->plantTree();
-    GARDEN->growthGarden();
-    GARDEN->plantTree();
-    GARDEN->plantTree();
-    GARDEN->growthGarden();
-    GARDEN->displayAll();
 
-    GARDEN->extractTree(3);
-    GARDEN->extractTree(3);
-    GARDEN->growthGarden();
-    GARDEN->growthGarden();
-    GARDEN->fadeGarden();
-    GARDEN->fadeGarden();
-    GARDEN->fadeGarden();
-    GARDEN->fadeGarden();
-    GARDEN->growthGarden();
-    GARDEN->growthGarden();
-    GARDEN->growthGarden();
-    GARDEN->displayAll();
+    TREE_CLASS* WOOD = new TREE_CLASS();
+    WOOD->growthTree();
+    WOOD->growthTree();
+    WOOD->growthTree();
+    WOOD->growthTree();
+    WOOD->growthTree();
+    WOOD->growthTree();
+    WOOD->growthTree();
+    WOOD->growthTree();
+    WOOD->growthTree();
+    WOOD->growthTree();
+    WOOD->displayAll();
 
-    GARDEN->harvestGarden(3);
-    GARDEN->cloneTree(3);
-    GARDEN->cloneTree(1);
-    GARDEN->cloneTree(8);
-    GARDEN->growthGarden();
-    GARDEN->growthGarden();
-    GARDEN->displayAll();
+    std::cout << "///////" << std::endl << std::endl;
 
-    delete GARDEN;
+    WOOD->getBranchPointer(6)->fadeBranch();
+    WOOD->getBranchPointer(6)->fadeBranch();
+    WOOD->getBranchPointer(6)->fadeBranch();
+    WOOD->getBranchPointer(6)->fadeBranch();
+    WOOD->getBranchPointer(6)->fadeBranch();
+    WOOD->displayAll();
 
-    TREE_CLASS * Tree = new TREE_CLASS();
-    Tree->growthTree();
-    Tree->growthTree();
-    Tree->growthTree();
-    Tree->growthTree();
-    Tree->growthTree();
-    Tree->growthTree();
-    Tree->growthTree();
-    Tree->growthTree();
-    Tree->growthTree();
-    Tree->displayAll();
-    std::cout<<std::endl;
+    std::cout << "///////" << std::endl << std::endl;
 
-    Tree->cutTree(3);
-    Tree->growthTree();
-    Tree->growthTree();
-    Tree->displayAll();
-
-    delete Tree;
+    WOOD->cloneBranch(WOOD->getBranchPointer(3));
+    WOOD->displayAll();
 }
 
