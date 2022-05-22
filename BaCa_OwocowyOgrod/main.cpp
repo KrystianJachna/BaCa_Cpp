@@ -15,7 +15,6 @@ private:
     unsigned int fruitsWeight;//
     TREE_CLASS* firstTree;
     TREE_CLASS* lastTree;
-    GARDEN_CLASS* next;
     unsigned int holesNumber;
 
 public:
@@ -311,18 +310,18 @@ FRUIT_CLASS::FRUIT_CLASS(FRUIT_CLASS &fruitToCopy, BRANCH_CLASS* fruitBranch) {
 }
 
 FRUIT_CLASS::~FRUIT_CLASS() {
-   if (fruitBranch != NULL) {
-       fruitBranch->decreseWeight(fruitWeight);
-       fruitBranch->decreseFruitNumber(1);
-       if (fruitBranch->getTreePointer() != NULL) {
-           fruitBranch->getTreePointer()->decreseWeight(fruitWeight);
-           fruitBranch->getTreePointer()->decreseFruitNumber(1);
-           if (fruitBranch->getTreePointer()->getGardenPointer() != NULL) {
-               fruitBranch->getTreePointer()->getGardenPointer()->decreseWeight(fruitWeight);
-               fruitBranch->getTreePointer()->getGardenPointer()->decreseFruitNumber(1);
-           }
-       }
-   }
+    if (fruitBranch != NULL) {
+        fruitBranch->decreseWeight(fruitWeight);
+        fruitBranch->decreseFruitNumber(1);
+        if (fruitBranch->getTreePointer() != NULL) {
+            fruitBranch->getTreePointer()->decreseWeight(fruitWeight);
+            fruitBranch->getTreePointer()->decreseFruitNumber(1);
+            if (fruitBranch->getTreePointer()->getGardenPointer() != NULL) {
+                fruitBranch->getTreePointer()->getGardenPointer()->decreseWeight(fruitWeight);
+                fruitBranch->getTreePointer()->getGardenPointer()->decreseFruitNumber(1);
+            }
+        }
+    }
 
 }
 
@@ -842,10 +841,8 @@ TREE_CLASS::TREE_CLASS(TREE_CLASS &treeToCopy, unsigned int treeNumber, GARDEN_C
     if (treeToCopy.firstBranch == NULL) {
         firstBranch = NULL;
         lastBranch = NULL;
-        if(treeGarden != NULL) {
+        if(treeGarden != NULL)
             treeGarden->increseTreesNumber(1);
-        }
-
         return;
     }
 
@@ -856,7 +853,8 @@ TREE_CLASS::TREE_CLASS(TREE_CLASS &treeToCopy, unsigned int treeNumber, GARDEN_C
     BRANCH_CLASS* prevt = NULL;
 
     while (walkingElemToCopy->nextBranch() != NULL) {
-        walkingElem->setNextBranch(new BRANCH_CLASS(*(walkingElemToCopy->nextBranch()), walkingElemToCopy->nextBranch()->getHeight(), this));
+        walkingElem->setNextBranch(new BRANCH_CLASS(*(walkingElemToCopy->nextBranch()),
+                                                    walkingElemToCopy->nextBranch()->getHeight(), this));
         walkingElem->setPrevBranch(prevt);
 
         prevt = walkingElem;
@@ -867,9 +865,9 @@ TREE_CLASS::TREE_CLASS(TREE_CLASS &treeToCopy, unsigned int treeNumber, GARDEN_C
     walkingElem->setNextBranch(NULL);
     lastBranch = walkingElem;
 
-    if(treeGarden != NULL) {
+    if(treeGarden != NULL)
         treeGarden->increseTreesNumber(1);
-    }
+
 }
 
 // =====================================================================================================================
@@ -894,7 +892,6 @@ GARDEN_CLASS::GARDEN_CLASS() {
 
     this->firstTree = NULL;
     this->lastTree = NULL;
-    this->next = NULL;
 }
 
 unsigned int GARDEN_CLASS::getTreesTotal() {
@@ -926,31 +923,30 @@ void GARDEN_CLASS::plantTree() {
     }
     else {
         holesNumber -= 1;
-        unsigned int prevNumber = lastTree->getNumber();
+        unsigned int prevNumber = firstTree->getNumber();
 
-        TREE_CLASS* walkingElem = lastTree;
-        while (walkingElem->prevTree() != NULL) {
-            if (walkingElem->prevTree()->getNumber() != (prevNumber - 1))
-                break;
-
-
-            walkingElem = walkingElem->prevTree();
-            prevNumber = walkingElem->getNumber();
-        }
-
-        if (walkingElem->prevTree() == NULL) {
+        TREE_CLASS* walkingElem = firstTree;
+        if (firstTree->getNumber() != 0) {
             firstTree->setprevTree(new TREE_CLASS(firstTree->getNumber() - 1, this));
             firstTree->prevTree()->setNextTree(firstTree);
             firstTree = firstTree->prevTree();
             firstTree->setprevTree(NULL);
+            return;
         }
-        else {
-            TREE_CLASS* b4walking = walkingElem->prevTree();
-            walkingElem->setprevTree(new TREE_CLASS(walkingElem->getNumber() - 1, this));
-            walkingElem->prevTree()->setNextTree(walkingElem);
-            walkingElem->prevTree()->setprevTree(b4walking);
-            walkingElem->prevTree()->prevTree()->setNextTree(walkingElem->prevTree());
+        while (walkingElem->nextTree() != NULL) {
+            if (walkingElem->nextTree()->getNumber() != (prevNumber + 1))
+                break;
+
+
+            walkingElem = walkingElem->nextTree();
+            prevNumber = walkingElem->getNumber();
         }
+        TREE_CLASS* afterWalking = walkingElem->nextTree();
+        walkingElem->setNextTree(new TREE_CLASS(walkingElem->getNumber() + 1, this));
+        walkingElem->nextTree()->setprevTree(walkingElem);
+        walkingElem->nextTree()->setNextTree(afterWalking);
+        afterWalking->setprevTree(walkingElem->nextTree());
+
     }
 }
 
@@ -1033,11 +1029,7 @@ void GARDEN_CLASS::cloneTree(unsigned int treeNumber) {
     if (!findTREE)
         return;
 
-    if (treesNumber == 0) {
-        firstTree = new TREE_CLASS(*treeToCopy, 1, this);
-        lastTree = firstTree;
-    }
-    else if (holesNumber == 0) {
+    if (holesNumber == 0) {
         lastTree->setNextTree(new TREE_CLASS(*treeToCopy ,lastTree->getNumber() + 1, this));
         lastTree->nextTree()->setprevTree(lastTree);
         lastTree = lastTree->nextTree();
@@ -1045,31 +1037,32 @@ void GARDEN_CLASS::cloneTree(unsigned int treeNumber) {
     }
     else {
         holesNumber -= 1;
-        unsigned int prevNumber = lastTree->getNumber();
+        unsigned int prevNumber = firstTree->getNumber();
 
-        TREE_CLASS* walkingElem = lastTree;
-        while (walkingElem->prevTree() != NULL) {
-            if (walkingElem->prevTree()->getNumber() != (prevNumber - 1))
-                break;
+        TREE_CLASS* walkingElem = firstTree;
 
-
-            walkingElem = walkingElem->prevTree();
-            prevNumber = walkingElem->getNumber();
-        }
-
-        if (walkingElem->prevTree() == NULL) {
+        if (firstTree->getNumber() != 0) {
             firstTree->setprevTree(new TREE_CLASS(*treeToCopy, firstTree->getNumber() - 1, this));
             firstTree->prevTree()->setNextTree(firstTree);
             firstTree = firstTree->prevTree();
             firstTree->setprevTree(NULL);
+            return;
         }
-        else {
-            TREE_CLASS* b4walking = walkingElem->prevTree();
-            walkingElem->setprevTree(new TREE_CLASS(*treeToCopy, walkingElem->getNumber() - 1, this));
-            walkingElem->prevTree()->setNextTree(walkingElem);
-            walkingElem->prevTree()->setprevTree(b4walking);
-            walkingElem->prevTree()->prevTree()->setNextTree(walkingElem->prevTree());
+        while (walkingElem->nextTree() != NULL) {
+            if (walkingElem->nextTree()->getNumber() != (prevNumber + 1))
+                break;
+
+
+            walkingElem = walkingElem->nextTree();
+            prevNumber = walkingElem->getNumber();
         }
+
+        TREE_CLASS* afterWalking = walkingElem->nextTree();
+        walkingElem->setNextTree(new TREE_CLASS(*treeToCopy, walkingElem->getNumber() + 1, this));
+        walkingElem->nextTree()->setprevTree(walkingElem);
+        walkingElem->nextTree()->setNextTree(afterWalking);
+        afterWalking->setprevTree(walkingElem->nextTree());
+
     }
 }
 
