@@ -545,17 +545,17 @@ BRANCH_CLASS::BRANCH_CLASS(BRANCH_CLASS &branchToCopy,  unsigned int treeHeight,
 
     FRUIT_CLASS* walkingElemToCopy = branchToCopy.firstFruit;
     FRUIT_CLASS* walkingElem = firstFruit;
-    FRUIT_CLASS* prev = NULL;
+    FRUIT_CLASS* prevt = NULL;
 
     while (walkingElemToCopy->nextFruit() != NULL) {
         walkingElem->setNextFruit(new FRUIT_CLASS(*(walkingElemToCopy->nextFruit()), this));
-        walkingElem->setPrevFruit(prev);
+        walkingElem->setPrevFruit(prevt);
 
-        prev = walkingElem;
+        prevt = walkingElem;
         walkingElem = walkingElem->nextFruit();
         walkingElemToCopy = walkingElemToCopy->nextFruit();
     }
-    walkingElem->setPrevFruit(prev);
+    walkingElem->setPrevFruit(prevt);
     walkingElem->setNextFruit(NULL);
     lastFruit = walkingElem;
 
@@ -851,17 +851,17 @@ TREE_CLASS::TREE_CLASS(TREE_CLASS &treeToCopy, unsigned int treeNumber, GARDEN_C
 
     BRANCH_CLASS* walkingElemToCopy = treeToCopy.firstBranch;
     BRANCH_CLASS* walkingElem = firstBranch;
-    BRANCH_CLASS* prev = NULL;
+    BRANCH_CLASS* prevt = NULL;
 
     while (walkingElemToCopy->nextBranch() != NULL) {
         walkingElem->setNextBranch(new BRANCH_CLASS(*(walkingElemToCopy->nextBranch()), walkingElemToCopy->nextBranch()->getHeight(), this));
-        walkingElem->setPrevBranch(prev);
+        walkingElem->setPrevBranch(prevt);
 
-        prev = walkingElem;
+        prevt = walkingElem;
         walkingElem = walkingElem->nextBranch();
         walkingElemToCopy = walkingElemToCopy->nextBranch();
     }
-    walkingElem->setPrevBranch(prev);
+    walkingElem->setPrevBranch(prevt);
     walkingElem->setNextBranch(NULL);
     lastBranch = walkingElem;
 
@@ -1133,53 +1133,3 @@ void BRANCH_CLASS::displayAll() {
     }
 }
 
-int main(){
-
-    GARDEN_CLASS* garden = new GARDEN_CLASS();
-    garden->plantTree();
-    garden->plantTree();
-    garden->plantTree();
-    garden->plantTree();
-    garden->extractTree(2);
-    garden->plantTree();
-    garden->growthGarden();
-    garden->plantTree();
-    garden->growthGarden();
-    garden->plantTree();
-    garden->growthGarden();
-    garden->plantTree();
-    garden->growthGarden();
-    garden->plantTree();
-    garden->plantTree();
-    garden->growthGarden();
-    garden->extractTree(3);
-    garden->extractTree(3);
-    garden->displayAll();
-
-    garden->growthGarden();
-    garden->growthGarden();
-    garden->fadeGarden();
-    garden->fadeGarden();
-    garden->fadeGarden();
-    garden->fadeGarden();
-    garden->growthGarden();
-    garden->growthGarden();
-    garden->growthGarden();
-    garden->growthGarden();
-    garden->harvestGarden(3);
-    garden->cloneTree(3);
-    garden->cloneTree(1);
-    garden->cloneTree(8);
-    garden->displayAll();
-
-    garden->getTreePointer(3)->cutTree(1);
-    garden->getTreePointer(1)->cutTree(5);
-    garden->extractTree(3);
-    garden->harvestGarden(2);
-    garden->getTreePointer(2)->growthTree();
-    garden->getTreePointer(2)->growthTree();
-    garden->fadeGarden();
-    garden->displayAll();
-    delete garden;
-
-}
