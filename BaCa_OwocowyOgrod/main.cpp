@@ -435,21 +435,23 @@ void BRANCH_CLASS::cutBranch(unsigned int branchLength) {
 
     FRUIT_CLASS* walkingElem = lastFruit;
 
-    while(walkingElem != NULL && walkingElem->getLength() >= branchLength) {
+    if (walkingElem == NULL)
+        return;
+
+    FRUIT_CLASS* prevWalkingElem;
+    while (walkingElem != NULL && walkingElem->getLength() > branchLength) {
+        prevWalkingElem = walkingElem;
         walkingElem = walkingElem->prevFruit();
-        walkingElem->nextFruit()->setNextFruit(NULL);
-        delete walkingElem->nextFruit();
+        delete prevWalkingElem;
     }
 
-    if (walkingElem == firstFruit && firstFruit->getLength() > branchLength) {
-        delete firstFruit;
-        firstFruit = NULL;
-        lastFruit = NULL;
-    }
-    else {
-        lastFruit = walkingElem;
+
+    lastFruit = walkingElem;
+    if (walkingElem != NULL)
         lastFruit->setNextFruit(NULL);
-    }
+    if (walkingElem == NULL)
+        firstFruit = NULL;
+
 }
 
 FRUIT_CLASS* BRANCH_CLASS::getFruitPointer(unsigned int length) {
@@ -730,7 +732,7 @@ void TREE_CLASS::cloneBranch(BRANCH_CLASS *branch) {
         scBranch->setPrevBranch(firstBranch);
     }
     else if (walkingElem == lastBranch) {
-        BRANCH_CLASS* scBranch = firstBranch->nextBranch();
+        BRANCH_CLASS* scBranch = lastBranch->prevBranch();
         unsigned int deletingTreeHight = lastBranch->getHeight();
         delete lastBranch;
 
@@ -1132,4 +1134,3 @@ void BRANCH_CLASS::displayAll() {
         i+=2;
     }
 }
-
